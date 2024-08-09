@@ -1,0 +1,21 @@
+@EventHandler
+public void onPlayerDeath(PlayerDeathEvent event) {
+    Player player = event.getEntity();
+    Player killer = player.getKiller();
+
+    if (killer != null) {
+        // Zabójca otrzymuje jedno dodatkowe serce
+        double health = killer.getMaxHealth();
+        killer.setMaxHealth(health + 2.0);
+
+        // Gracz, który umarł, traci jedno serce
+        double victimHealth = player.getMaxHealth();
+        player.setMaxHealth(victimHealth - 2.0);
+
+        // Jeżeli gracz ma 0 serc, jest banowany
+        if (player.getMaxHealth() <= 0) {
+            player.setBanned(true);
+            player.kickPlayer("Zostałeś zbanowany za utratę wszystkich serc!");
+        }
+    }
+}
